@@ -1,68 +1,74 @@
-<?php 
+<?php
 
-$nome = $email = $mensagem = "";
-$erroNome = $erroEmail = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // Validação do nome
-    if (empty($_POST['nome'])) {
-        $erroNome = "O campo nome é obrigatório!";
-    } else {
-        $nome = htmlspecialchars($_POST['nome'], ENT_QUOTES, 'UTF-8');
-    }
-
-    // Validação do e-mail
-    if (empty($_POST['email'])) {
-        $erroEmail = "O campo email é obrigatório!";
-    } else {
-        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-        if ($email === false) {
-            $erroEmail = "Formato de e-mail inválido!";
-        }
-    }
-
-    // Sanitização da mensagem
-    $mensagem = htmlspecialchars($_POST["mensagem"], ENT_QUOTES, 'UTF-8');
+// Função para salvar os dados no arquivo
+function salvarNota($nome, $nota) {
+    $linha = "$nome,$nota\n";
+    file_put_contents("notas.txt", $linha, FILE_APPEND);
 }
+
+// Função para ler os dados do arquivo
+function listarNotas() {
+    if (!file_exists("notas.txt")) {
+        return [];
+    }
+    
+    $linhas = file("notas.txt", FILE_IGNORE_NEW_LINES);
+    $alunos = [];
+    foreach ($linhas as $linha) {
+        list($nome, $nota) = explode(",", $linha);
+        $alunos[] = ["nome" => $nome, "nota" => (float)$nota];
+    }
+    return $alunos;
+}
+
+// Função para calcular a média
+function calcularMedia($alunos) {
+    if (empty($alunos)) {
+        return 0;
+    }
+    
+    $total = array_sum(array_column($alunos, "nota"));
+    return $total / count($alunos);
+}
+
+// Tratando a submissão do formulário
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nome = trim($_POST["nome"]);
+    $nota = floatval($_POST["nota"]);
+    if ($nome && $nota >= 0) {
+        salvarNota($nome, $nota);
+    }
+    header("Location: " . $_SERVER['PHP_SELF']); // Evita reenvio do formulário
+    exit;
+}
+
+$alunos = listarNotas();
+$media = calcularMedia($alunos);
 
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário com Validações</title>
+    <title>Gerenciamento de Notas</title>
 </head>
 <body>
-    <h2>Responda o formulário!</h2>
-
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" value="<?php echo htmlspecialchars($nome); ?>"/>
-        <span style="color: red;"><?php echo $erroNome; ?></span>
-        <br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>"/>
-        <span style="color: red;"><?php echo $erroEmail; ?></span>
-        <br>
-
-        <label for="mensagem">Mensagem:</label>
-        <textarea name="mensagem" id="mensagem"><?php echo htmlspecialchars($mensagem); ?></textarea>
-        <br>
-
-        <input type="submit" value="Enviar">
+    <h2>Cadastrar Aluno</h2>
+    <form method="POST">
+        Nome: <input type="text" name="nome" required>
+        Nota: <input type="number" name="nota" step="0.1" required>
+        <button type="submit">Salvar</button>
     </form>
 
-    <?php 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($erroNome) && empty($erroEmail)) {
-        echo "<h3>Dados Recebidos:</h3>";
-        echo "<p><strong>Nome:</strong> " . htmlspecialchars($nome) . "</p>"; 
-        echo "<p><strong>Email:</strong> " . htmlspecialchars($email) . "</p>"; 
-        echo "<p><strong>Mensagem:</strong> " . htmlspecialchars($mensagem) . "</p>"; 
-    }
-    ?>
+    <h2>Lista de Alunos e Notas</h2>
+    <ul>
+        <?php foreach ($alunos as $aluno): ?>
+            <li><?= htmlspecialchars($aluno["nome"]) ?> - Nota: <?= $aluno["nota"] ?></li>
+        <?php endforeach; ?>
+    </ul>
+
+    <h2>Média das Notas: <?= number_format($media, 2) ?></h2>
 </body>
 </html>
