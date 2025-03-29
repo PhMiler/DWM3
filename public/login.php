@@ -1,4 +1,5 @@
 <?php
+// login.php - Arquivo responsável por funcionalidade específica do sistema
 session_start();
 require_once '../config/Database.php';
 require_once '../classes/Auth.php';
@@ -8,8 +9,8 @@ $auth = new Auth($db);
 
 $erro = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $senha = filter_input(INPUT_POST, 'senha', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     if ($auth->login($email, $senha)) {
         header("Location: dashboard.php");
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
     <div class="container">

@@ -1,85 +1,86 @@
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f3f4f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f1f4f9;
     margin: 0;
+    padding: 0;
+    color: #333;
 }
 
 .container {
-    background: #fff;
-    padding: 2rem;
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2, h3 {
+    text-align: center;
+    color: #222;
+}
+
+table {
     width: 100%;
-    max-width: 400px;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 12px;
     text-align: center;
 }
 
-h2 {
-    margin-bottom: 1rem;
-    color: #1f2937;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-input, select, button {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-button {
-    background-color: #1d4ed8;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #2563eb;
+th {
+    background-color: #f8f8f8;
+    font-weight: bold;
 }
 
 a {
-    display: block;
-    margin-top: 1rem;
-    color: #1d4ed8;
     text-decoration: none;
-    font-weight: 500;
+    color: #1a73e8;
+    margin: 0 4px;
 }
 
 a:hover {
     text-decoration: underline;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+form {
+    text-align: center;
+    margin-top: 50px;
 }
 
-ul li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 10px 0;
+input[type="month"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+    margin: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
-ul li a {
-    text-decoration: none;
-    color: #1d4ed8;
-    font-weight: 500;
-    transition: 0.2s;
+button {
+    background-color: #1a73e8;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 5px;
 }
 
-ul li a:hover {
-    text-decoration: underline;
+button:hover {
+    background-color: #0f5ec7;
 }

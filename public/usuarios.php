@@ -1,4 +1,5 @@
 <?php
+// usuarios.php - Arquivo responsável por funcionalidade específica do sistema
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
@@ -17,7 +18,7 @@ $usuarios = $usuario->listar();
 <head>
     <meta charset="UTF-8">
     <title>Usuários</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
     <div class="container">

@@ -1,5 +1,8 @@
 <?php
+// incluir-receita.php - Arquivo responsável por funcionalidade específica do sistema
 session_start();
+$mensagem = $_SESSION['sucesso'] ?? null;
+unset($_SESSION['sucesso']);
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit;
@@ -12,9 +15,9 @@ $receita = new Receita($db);
 
 $mensagem = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $descricao = $_POST['descricao'];
-    $valor = $_POST['valor'];
-    $data = $_POST['data'];
+    $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
+    $valor = filter_input(INPUT_POST, 'valor', FILTER_VALIDATE_FLOAT);
+    $data = filter_input(INPUT_POST, 'data', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     if ($receita->inserir($descricao, $valor, $data)) {
         $mensagem = "Receita inserida com sucesso!";
@@ -28,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Incluir Receita</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
     <div class="container">

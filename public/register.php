@@ -1,4 +1,5 @@
 <?php
+// register.php - Arquivo responsável por funcionalidade específica do sistema
 session_start();
 require_once '../config/Database.php';
 require_once '../classes/Usuario.php';
@@ -9,9 +10,9 @@ $usuario = new Usuario($db);
 $mensagem = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $senha = filter_input(INPUT_POST, 'senha', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     if ($usuario->cadastrar($nome, $email, $senha)) {
         $mensagem = "Usuário cadastrado com sucesso!";
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Registrar</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
     <div class="container">

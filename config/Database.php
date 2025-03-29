@@ -1,4 +1,16 @@
 <?php
+// Database.php - Responsável pela conexão com o banco de dados
+// Classe responsável por funcionalidades específicas
+/**
+ * Classe Database
+ *
+ * Responsável por lidar com operações de database.
+ */
+/**
+ * Classe Database
+ *
+ * Responsável por lidar com operações relacionadas a database.
+ */
 class Database {
     private $host = "localhost";
     private $db_name = "financeiro";
@@ -7,6 +19,13 @@ class Database {
     private $port = "3308";
     public $conn;
 
+// Função que executa uma ação importante no fluxo
+/**
+ * Método connect()
+ * Descreva aqui o que essa função faz.
+ *
+ * @return void
+ */
     public function connect() {
         $this->conn = null;
         try {

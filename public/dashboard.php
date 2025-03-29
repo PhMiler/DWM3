@@ -1,4 +1,5 @@
 <?php
+// dashboard.php - Arquivo responsável por funcionalidade específica do sistema
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
@@ -16,7 +17,7 @@ $dados = $usuario->buscarPorId($_SESSION['usuario_id']);
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
     <style>
         .menu {
             display: flex;
